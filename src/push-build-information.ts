@@ -19,7 +19,9 @@ export async function pushBuildInformation(
   }
 
   const pushEvent: PushEvent | undefined = context.payload as PushEvent
-  const repoUri = `https://github.com/${context.repo.owner}/${context.repo.repo}`
+  const repoUri: string =
+    pushEvent?.repository?.html_url ||
+    `https://github.com/${context.repo.owner}/${context.repo.repo}`
   const commits: CommitDetail[] =
     pushEvent?.commits?.map((commit: Commit) => {
       return {
