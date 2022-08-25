@@ -1,6 +1,10 @@
 import {info, setFailed} from '@actions/core'
 import {context} from '@actions/github'
-import {Commit, PushEvent, PullRequestSynchronizeEvent} from '@octokit/webhooks-types/schema'
+import {
+  Commit,
+  PushEvent,
+  PullRequestSynchronizeEvent
+} from '@octokit/webhooks-types/schema'
 import {BuildInformationRepository, Client} from '@octopusdeploy/api-client'
 import {
   CommitDetail,
@@ -19,16 +23,17 @@ export async function pushBuildInformation(
   }
 
   const event: PushEvent | PullRequestSynchronizeEvent | undefined =
-    (context.payload as PushEvent)?.commits ?
-      context.payload as PushEvent :
-    (context.payload as PullRequestSynchronizeEvent)?.pull_request ?
-      context.payload as PullRequestSynchronizeEvent :
-    undefined
+    (context.payload as PushEvent)?.commits
+    ? (context.payload as PushEvent)
+    : (context.payload as PullRequestSynchronizeEvent)?.pull_request
+    ? (context.payload as PullRequestSynchronizeEvent)
+    : undefined
   const repoUri: string =
     event?.repository?.html_url ||
     `https://github.com/${context.repo.owner}/${context.repo.repo}`
   const commitArray: Commit[] =
-    (event as PushEvent)?.commits ?? (event as PullRequestSynchronizeEvent)?.pull_request?.commits
+    (event as PushEvent)?.commits ??
+    (event as PullRequestSynchronizeEvent)?.pull_request?.commits
   const commits: CommitDetail[] =
     commitArray?.map((commit: Commit) => {
       return {
