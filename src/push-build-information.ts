@@ -22,8 +22,9 @@ export async function pushBuildInformation(
     branch = branch.substring('refs/heads/'.length)
   }
 
-  const event: PushEvent | PullRequestSynchronizeEvent | undefined =
-    (context.payload as PushEvent)?.commits
+  const event: PushEvent | PullRequestSynchronizeEvent | undefined = (
+    context.payload as PushEvent
+  )?.commits
     ? (context.payload as PushEvent)
     : (context.payload as PullRequestSynchronizeEvent)?.pull_request
     ? (context.payload as PullRequestSynchronizeEvent)
