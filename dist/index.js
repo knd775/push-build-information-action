@@ -61538,9 +61538,10 @@ function pushBuildInformation(runId, parameters) {
         if (branch.startsWith('refs/heads/')) {
             branch = branch.substring('refs/heads/'.length);
         }
-        const event = ((_a = github_1.context.payload) === null || _a === void 0 ? void 0 : _a.commits)
+        const event = ((_a = github_1.context.payload) === null || _a === void 0 ? void 0 : _a.commits) !== undefined
             ? github_1.context.payload
-            : ((_b = github_1.context.payload) === null || _b === void 0 ? void 0 : _b.pull_request)
+            : ((_b = github_1.context.payload) === null || _b === void 0 ? void 0 : _b.pull_request) !==
+                undefined
                 ? github_1.context.payload
                 : undefined;
         const repoUri = ((_c = event === null || event === void 0 ? void 0 : event.repository) === null || _c === void 0 ? void 0 : _c.html_url) ||
