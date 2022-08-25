@@ -22,13 +22,13 @@ export async function pushBuildInformation(
     branch = branch.substring('refs/heads/'.length)
   }
 
-  const event: PushEvent | PullRequestSynchronizeEvent | undefined = (
-    context.payload as PushEvent
-  )?.commits
-    ? (context.payload as PushEvent)
-    : (context.payload as PullRequestSynchronizeEvent)?.pull_request
-    ? (context.payload as PullRequestSynchronizeEvent)
-    : undefined
+  const event: PushEvent | PullRequestSynchronizeEvent | undefined =
+    (context.payload as PushEvent)?.commits !== undefined
+      ? (context.payload as PushEvent)
+      : (context.payload as PullRequestSynchronizeEvent)?.pull_request !==
+        undefined
+      ? (context.payload as PullRequestSynchronizeEvent)
+      : undefined
   const repoUri: string =
     event?.repository?.html_url ||
     `https://github.com/${context.repo.owner}/${context.repo.repo}`
