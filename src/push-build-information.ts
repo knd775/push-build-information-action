@@ -23,7 +23,7 @@ export async function pushBuildInformation(
     pushEvent?.repository?.html_url ||
     `https://github.com/${context.repo.owner}/${context.repo.repo}`
   const commitArray: Commit[] =
-    pushEvent?.commits?? pushEvent?.pull_request?.commits
+    pushEvent?.commits ?? pushEvent?.pull_request?.commits
   const commits: CommitDetail[] =
     commitArray?.map((commit: Commit) => {
       return {
