@@ -61532,16 +61532,21 @@ const core_1 = __nccwpck_require__(42186);
 const github_1 = __nccwpck_require__(95438);
 const api_client_1 = __nccwpck_require__(80586);
 function pushBuildInformation(runId, parameters) {
-    var _a, _b;
+    var _a, _b, _c, _d, _e;
     return __awaiter(this, void 0, void 0, function* () {
         let branch = parameters.branch || github_1.context.ref;
         if (branch.startsWith('refs/heads/')) {
             branch = branch.substring('refs/heads/'.length);
         }
-        const pushEvent = github_1.context.payload;
-        const repoUri = ((_a = pushEvent === null || pushEvent === void 0 ? void 0 : pushEvent.repository) === null || _a === void 0 ? void 0 : _a.html_url) ||
+        const event = ((_a = github_1.context.payload) === null || _a === void 0 ? void 0 : _a.commits)
+            ? github_1.context.payload
+            : ((_b = github_1.context.payload) === null || _b === void 0 ? void 0 : _b.pull_request)
+                ? github_1.context.payload
+                : undefined;
+        const repoUri = ((_c = event === null || event === void 0 ? void 0 : event.repository) === null || _c === void 0 ? void 0 : _c.html_url) ||
             `https://github.com/${github_1.context.repo.owner}/${github_1.context.repo.repo}`;
-        const commits = ((_b = pushEvent === null || pushEvent === void 0 ? void 0 : pushEvent.commits) === null || _b === void 0 ? void 0 : _b.map((commit) => {
+        const commitArray = (_d = event === null || event === void 0 ? void 0 : event.commits) !== null && _d !== void 0 ? _d : (_e = event === null || event === void 0 ? void 0 : event.pull_request) === null || _e === void 0 ? void 0 : _e.commits;
+        const commits = (commitArray === null || commitArray === void 0 ? void 0 : commitArray.map((commit) => {
             return {
                 Id: commit.id,
                 Comment: commit.message,
